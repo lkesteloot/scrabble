@@ -1,0 +1,22 @@
+
+/usr/share/dict/words
+    Very poor. Missing words like "acknowledging" (though has "unacknowledging").
+    204k words after removing any with upper case, one-letter words, and any longer
+    than 15 letters.
+
+http://wordlist.sourceforge.net/
+    12dicts-5.0
+        Kinda weird. Not clear which is best of the 12.
+
+http://www.mieliestronk.com/wordlist.html
+    corncob_lowercase
+        Seems good! Missing "a". Uses British spelling ("utilise").
+
+http://dreamsteep.com/projects/98-software/53-the-english-open-word-list-eowl.html
+    EOWL-v1.1.1
+        Supposedly for games like Scrabble. Missing "a" but includes "aarrghh".
+        CSV file is actually CR-separated.
+
+http://homepage.ntlworld.com/adam.bozon/scrabblelists.htm
+http://www.becomeawordgameexpert.com/wordlists.htm
+    Took dictionary page and made "dictionary" file.
