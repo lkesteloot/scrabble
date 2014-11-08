@@ -183,9 +183,9 @@ class Board(object):
                     return -1, None, None
 
             row, col = direction.increment(row, col)
-            if col >= self.SIZE:
+            if col > self.SIZE:
                 return -1, None, None
-            if row >= self.SIZE:
+            if row > self.SIZE:
                 return -1, None, None
 
         return rack_used_count, word_blank_indices, rack_used_indices
