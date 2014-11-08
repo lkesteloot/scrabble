@@ -55,7 +55,13 @@ class Solution(object):
         self.rack_indices = rack_indices or []
 
     def __str__(self):
-        s = "%s (%d,%d,%s)" % (self.word, self.row, self.col, self.direction)
+        word = ''
+        for i, letter in enumerate(self.word):
+            if i in self.word_blank_indices:
+                word += letter.lower()
+            else:
+                word += letter
+        s = "%s (%d,%d,%s)" % (word, self.row, self.col, self.direction)
         if self.score:
             s += " = %d" % (self.score,)
         return s
