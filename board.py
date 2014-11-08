@@ -124,8 +124,8 @@ class Board(object):
             if word_blank_indices and word_index in word_blank_indices:
                 self.is_blank[index] = True
             row, col = direction.increment(row, col)
-            assert col < self.SIZE
-            assert row < self.SIZE
+            assert col <= self.SIZE
+            assert row <= self.SIZE
 
         return added_indices
 
