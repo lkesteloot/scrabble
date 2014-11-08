@@ -411,6 +411,8 @@ class Board(object):
                 cell = self.cells[index]
 
                 cell_string = cell if cell else " "
+                if self.is_blank[index]:
+                    cell_string = cell.lower()
 
                 if PREMIUM_CELLS[index] == ".":
                     background_color = 47
