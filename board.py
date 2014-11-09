@@ -115,6 +115,8 @@ class Board(object):
         added_indices = []
 
         for word_index, ch in enumerate(word):
+            assert col <= self.SIZE
+            assert row <= self.SIZE
             index = self.get_index(row, col)
 
             # Double-check that word can fit here.
@@ -124,8 +126,6 @@ class Board(object):
             if word_blank_indices and word_index in word_blank_indices:
                 self.is_blank[index] = True
             row, col = direction.increment(row, col)
-            assert col <= self.SIZE
-            assert row <= self.SIZE
 
         return added_indices
 
@@ -154,6 +154,10 @@ class Board(object):
 
         # Try each letter of the word.
         for word_index, ch in enumerate(word):
+            if col >= self.SIZE:
+                return -1, None, None
+            if row >= self.SIZE:
+                return -1, None, None
             index = self.get_index(row, col)
             cell = self.cells[index]
             if cell is None:
@@ -183,10 +187,6 @@ class Board(object):
                     return -1, None, None
 
             row, col = direction.increment(row, col)
-            if col > self.SIZE:
-                return -1, None, None
-            if row > self.SIZE:
-                return -1, None, None
 
         return rack_used_count, word_blank_indices, rack_used_indices
 
