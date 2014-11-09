@@ -99,14 +99,12 @@ class Solution(object):
                     word_multiplier *= board.get_word_multiplier(index)
                 else:
                     # If it was an existing tile, we don't get any multipliers.
-                    if board.is_blank[index]: # if the tile is blank don't count it
-                        letter_multiplier = 0
-                    else:
-                        letter_multiplier = 1
+                    letter_multiplier = 1
 
-                # If this was a blank tile, we get no points for this tile.
-                if dpos in self.word_blank_indices:
+                # zero if the tile is blank
+                if new_board.is_blank[index]:
                     letter_multiplier = 0
+
 
                 word_score += LETTER_SCORE[ch]*letter_multiplier
 
