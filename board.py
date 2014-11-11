@@ -313,9 +313,6 @@ class Board(object):
         # Try each word to see if it can fit physically. We try every combination of
         # available letters.
         possible_words = set()
-        print "available_letters", available_letters
-        print "possible_words", possible_words
-        print "letters_map", letters_map
 
         # Keep track of which letter we're using for this combination.
         used = [False]*len(available_letters)
