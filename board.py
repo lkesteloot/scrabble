@@ -115,8 +115,8 @@ class Board(object):
         added_indices = []
 
         for word_index, ch in enumerate(word):
-            assert col <= self.SIZE
-            assert row <= self.SIZE
+            assert col < self.SIZE
+            assert row < self.SIZE
             index = self.get_index(row, col)
 
             # Double-check that word can fit here.
