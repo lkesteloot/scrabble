@@ -82,16 +82,29 @@ class Test_score(unittest.TestCase):
 
         board = Board()
         board.add_word('DUCE', 7, 4, HORIZONTAL)
-        print board
         sol= Solution(7, 7, VERTICAL, 'EGRUGEAI', [1]) 
         sol.determine_score(board, dic)
-        print sol
         sol= Solution(7, 7, VERTICAL, 'EGRUGEAI', [4]) 
         sol.determine_score(board, dic)
-        print sol
 
         solutions = board.generate_solutions('RUIAG?E', dic)
-        print '\n'.join([str(s) for s in solutions])
         solution = board.find_best_solution(solutions, dic)
-        print solution
         self.assertEqual(solution.score, 80)
+
+    def test_blanks_with_same_letter(self):
+
+        dic = Dictionary()
+        dic.set_words(["ABA"])
+        board = Board()
+        solutions = []
+        board.generate_solutions_in_line('?BA', dic, 7, HORIZONTAL, solutions)
+        words = set([(str(s)) for s in solutions])
+        self.assertEqual(words, set(['ABa (7,7,H)', 
+            'aBA (7,7,H)', 
+            'ABa (7,5,H)', 
+            'aBA (7,5,H)', 
+            'ABa (7,6,H)', 
+            'aBA (7,6,H)']))
+
+
+

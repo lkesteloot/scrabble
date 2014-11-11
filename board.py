@@ -384,6 +384,17 @@ class Board(object):
                     # Add to our list of solutions.
                     solutions.append(Solution(row, col, direction, word,
                         word_blank_indices, rack_used_indices))
+                    # if blanks, try others possible indices on same letter
+                    # ABa / aBA
+                    for i, indice in enumerate(word_blank_indices):
+                        wb = word[indice]
+                        for match in re.finditer(wb, word):
+                            if match != indice:
+                                wbi = list(word_blank_indices)
+                                wbi[i] = match.start()
+                                solutions.append(Solution(row, col, direction, word,
+                                    wbi, rack_used_indices))
+
 
     def find_best_solution(self, solutions, dictionary):
         """Given a list of possible solutions, score them and find the best one. Also
