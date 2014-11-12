@@ -33,6 +33,8 @@ LETTER_SCORE = {
         "Z": 10,
 }
 
+SCRABBLE_BONUS = 50
+
 class Solution(object):
     """Represents a possible solution (and optionally its score)."""
 
@@ -53,7 +55,13 @@ class Solution(object):
         self.rack_indices = rack_indices or []
 
     def __str__(self):
-        s = "%s (%d,%d,%s)" % (self.word, self.row, self.col, self.direction)
+        word = ''
+        for i, letter in enumerate(self.word):
+            if i in self.word_blank_indices:
+                word += letter.lower()
+            else:
+                word += letter
+        s = "%s (%d,%d,%s)" % (word, self.row, self.col, self.direction)
         if self.score:
             s += " = %d" % (self.score,)
         return s
@@ -90,12 +98,13 @@ class Solution(object):
                     letter_multiplier = board.get_letter_multiplier(index)
                     word_multiplier *= board.get_word_multiplier(index)
                 else:
-                    # If it was an existing title, we don't get any multipliers.
+                    # If it was an existing tile, we don't get any multipliers.
                     letter_multiplier = 1
 
-                # If this was a blank tile, we get no points for this tile.
-                if dpos in self.word_blank_indices:
+                # zero if the tile is blank
+                if new_board.is_blank[index]:
                     letter_multiplier = 0
+
 
                 word_score += LETTER_SCORE[ch]*letter_multiplier
 
@@ -133,6 +142,8 @@ class Solution(object):
                         score += get_word_score(found_word, row, col, perpendicular_direction)
 
         self.score = score
+        if len(self.rack_indices) == 7:
+            self.score += SCRABBLE_BONUS
 
     def get_new_rack(self, rack):
         """Given this solution and the rack it came from, return the rack after the
