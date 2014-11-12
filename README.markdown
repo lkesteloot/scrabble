@@ -58,3 +58,10 @@ To handle blank tiles we modify the above as follows:
     so we can highlight it when displaying the board and score it zero for the
     next turn.
 
+Code
+----
+
+To run tests
+
+    % python -m unittest discover
+
