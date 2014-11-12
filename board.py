@@ -8,6 +8,7 @@ import time
 from direction import DIRECTIONS
 from solution import Solution
 from bag import BLANK
+from board_exceptions import BoardError, OutsideError, TooManyBlanksError, InvalidPremiumError, MismatchLetterError
 
 # Premium cells.
 # http://en.wikipedia.org/wiki/Scrabble#Scoring
@@ -115,12 +116,13 @@ class Board(object):
         added_indices = []
 
         for word_index, ch in enumerate(word):
-            assert col < self.SIZE
-            assert row < self.SIZE
+            if not (col < self.SIZE and row < self.SIZE):
+                raise OutsideError()
             index = self.get_index(row, col)
 
             # Double-check that word can fit here.
-            assert self.cells[index] is None or self.cells[index] == ch
+            if not (self.cells[index] is None or self.cells[index] == ch):
+                raise MismatchLetterError()
             added_indices.append((word_index, row, col, index, ch, self.cells[index] is None))
             self.cells[index] = ch
             if word_blank_indices and word_index in word_blank_indices:
@@ -210,7 +212,7 @@ class Board(object):
                 break
         else:
             # Can't get here.
-            assert False
+            raise BoardError()
 
         # Go forward until we've gone too far.
         for length in range(1, self.SIZE + 1):
@@ -224,7 +226,7 @@ class Board(object):
                 return (row, col, length)
 
         # Can't get here.
-        assert False
+        raise BoardError()
 
     def get_word(self, row, col, length, direction):
         """Return the word at the location and with the given length."""
@@ -306,7 +308,7 @@ class Board(object):
         elif blank_count == 2:
             letters_map = dictionary.letters_map_two_blanks
         else:
-            assert False, "Too many blanks"
+            raise TooManyBlanksError()
 
         # Try each word to see if it can fit physically. We try every combination of
         # available letters.
@@ -382,6 +384,17 @@ class Board(object):
                     # Add to our list of solutions.
                     solutions.append(Solution(row, col, direction, word,
                         word_blank_indices, rack_used_indices))
+                    # if blanks, try others possible indices on same letter
+                    # ABa / aBA
+                    for i, indice in enumerate(word_blank_indices):
+                        wb = word[indice]
+                        for match in re.finditer(wb, word):
+                            if match != indice:
+                                wbi = list(word_blank_indices)
+                                wbi[i] = match.start()
+                                solutions.append(Solution(row, col, direction, word,
+                                    wbi, rack_used_indices))
+
 
     def find_best_solution(self, solutions, dictionary):
         """Given a list of possible solutions, score them and find the best one. Also
@@ -430,7 +443,7 @@ class Board(object):
                     background_color = 44
                     foreground_color = 37
                 else:
-                    assert False, "Invalid premium letter"
+                    raise InvalidPremiumError()
 
                 if self.is_blank[index]:
                     background_color = 43
