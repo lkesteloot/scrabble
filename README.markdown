@@ -50,8 +50,8 @@ To handle blank tiles we modify the above as follows:
 3. When laying out possible solutions, if we're missing a letter in the word,
     we can use a blank tile.
 
-4. If the blank tile replace a letter present more than one time in the word we
-    generate all the solutions for each indice.
+4. If the blank tile replaces a letter present more than once in the word, we
+    generate all solutions for each index.
 
 5. When placing the chosen solution on the board, put down a tile with the real
     letter (not the blank tile), but keep track of the fact that it was a blank
